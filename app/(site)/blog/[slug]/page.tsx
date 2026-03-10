@@ -13,6 +13,7 @@ import { formatDate } from "@/lib/utils";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const revalidate = 60;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const slugs = await getPostSlugs();
