@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import Bio from "@/components/about/Bio";
 import ContactForm from "@/components/about/ContactForm";
 import { getAuthor } from "@/sanity/lib/queries";
@@ -66,14 +67,16 @@ export default async function AboutPage() {
           /* Fallback bio when Sanity author doc isn't set up yet */
           <section className="py-16 md:py-24">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-              {/* Photo placeholder */}
-              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-gradient-to-br from-emerald/10 via-sky-blue/10 to-bubblegum/10 flex items-center justify-center">
-                <div className="text-center">
-                  <span className="text-7xl">👩‍🍳</span>
-                  <p className="mt-4 text-sm text-evergreen/40">
-                    Photo coming soon
-                  </p>
-                </div>
+              {/* Photo */}
+              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-xl">
+                <Image
+                  src="/sk-about.jpg"
+                  alt="SK — Feeding SK"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
               </div>
 
               {/* Story */}
