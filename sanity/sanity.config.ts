@@ -11,6 +11,7 @@ export default defineConfig({
   title: "Feeding SK",
   projectId,
   dataset,
+  basePath: "/studio",
   plugins: [
     structureTool({
       structure: (S) =>
