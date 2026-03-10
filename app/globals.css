@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --color-emerald: #3CB961;
+  --color-bubblegum: #F16A87;
+  --color-evergreen: #042A2B;
+  --color-sky-blue: #9ED0E6;
+  --color-steel-blue: #769FB6;
+  --color-offwhite: #FFFDF9;
+  --color-background: var(--color-offwhite);
+  --color-foreground: var(--color-evergreen);
+  --font-heading: var(--font-dm-serif);
+  --font-body: var(--font-dm-sans);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), serif;
+}
+
+/* Prose overrides for blog content */
+.prose {
+  --tw-prose-body: var(--color-evergreen);
+  --tw-prose-headings: var(--color-evergreen);
+  --tw-prose-links: var(--color-emerald);
+  --tw-prose-bold: var(--color-evergreen);
+  max-width: 72ch;
+}
+
+.prose a:hover {
+  color: var(--color-bubblegum);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: #3CB96133;
+}
