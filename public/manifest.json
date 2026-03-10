@@ -1,0 +1,21 @@
+{
+  "name": "Feeding SK",
+  "short_name": "Feeding SK",
+  "description": "Home-cooked recipes, SF restaurant reviews, and lifestyle content by SK.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#042A2B",
+  "background_color": "#FFFDF9",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

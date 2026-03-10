@@ -21,7 +21,14 @@ export async function getSiteSettings() {
       heroPost->{
         title,
         slug,
-        mainImage,
+        mainImage{
+          ...,
+          asset->{
+            _id,
+            url,
+            metadata{ lqip, dimensions }
+          }
+        },
         excerpt,
         postType,
         publishedAt
@@ -30,7 +37,14 @@ export async function getSiteSettings() {
         _id,
         title,
         slug,
-        mainImage,
+        mainImage{
+          ...,
+          asset->{
+            _id,
+            url,
+            metadata{ lqip, dimensions }
+          }
+        },
         excerpt,
         postType,
         publishedAt,
@@ -64,7 +78,14 @@ export async function getAllPosts(
       _id,
       title,
       slug,
-      mainImage,
+      mainImage{
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata{ lqip, dimensions }
+        }
+      },
       excerpt,
       postType,
       publishedAt,
@@ -87,10 +108,18 @@ export async function getPostBySlug(slug: string) {
   return safeFetch(
     `*[_type == "post" && (slug.current == $slug || slug.current == "/" + $slug)][0]{
       _id,
+      _updatedAt,
       title,
       slug,
       postType,
-      mainImage,
+      mainImage{
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata{ lqip, dimensions }
+        }
+      },
       excerpt,
       publishedAt,
       body,
@@ -123,7 +152,14 @@ export async function getRelatedPosts(
       _id,
       title,
       slug,
-      mainImage,
+      mainImage{
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata{ lqip, dimensions }
+        }
+      },
       excerpt,
       postType,
       publishedAt,
@@ -156,7 +192,14 @@ export async function getLatestPostsByType(
       _id,
       title,
       slug,
-      mainImage,
+      mainImage{
+        ...,
+        asset->{
+          _id,
+          url,
+          metadata{ lqip, dimensions }
+        }
+      },
       excerpt,
       postType,
       publishedAt,

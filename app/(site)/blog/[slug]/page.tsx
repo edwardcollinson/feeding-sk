@@ -6,6 +6,7 @@ import RecipeDetails from "@/components/blog/RecipeDetails";
 import RestaurantDetails from "@/components/blog/RestaurantDetails";
 import PortableTextRenderer from "@/components/blog/PortableTextRenderer";
 import PostGrid from "@/components/blog/PostGrid";
+import ShareButtons from "@/components/blog/ShareButtons";
 import NewsletterSignup from "@/components/home/NewsletterSignup";
 import { getPostBySlug, getRelatedPosts, getPostSlugs } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -38,6 +39,8 @@ export async function generateMetadata({
       ? urlFor(post.mainImage).width(1200).height(630).url()
       : undefined;
 
+  const categories = post.categories?.map((cat: any) => cat.title) || [];
+
   return {
     title,
     description,
@@ -46,8 +49,18 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: post.publishedAt,
+      modifiedTime: post._updatedAt,
       url: `${SITE_URL}/blog/${slug}`,
       images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
+      authors: ["SK"],
+      section: categories[0],
+      tags: categories,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
     },
   };
 }
@@ -69,12 +82,22 @@ export default async function BlogPostPage({
     3
   );
 
+  const postUrl = `${SITE_URL}/blog/${slug}`;
+  const ogImageUrl = post.mainImage
+    ? urlFor(post.mainImage).width(1200).height(630).url()
+    : undefined;
+  const categoryNames = post.categories?.map((cat: any) => cat.title) || [];
+
   // JSON-LD structured data
   const jsonLd: any = {
     "@context": "https://schema.org",
     "@type": post.postType === "recipe" ? "Recipe" : "Article",
     headline: post.title,
+    description: post.excerpt || "",
+    url: postUrl,
     datePublished: post.publishedAt,
+    dateModified: post._updatedAt || post.publishedAt,
+    keywords: categoryNames.join(", "),
     author: { "@type": "Person", name: "SK" },
     publisher: { "@type": "Organization", name: SITE_NAME },
   };
@@ -106,15 +129,45 @@ export default async function BlogPostPage({
     }
   }
 
-  if (post.mainImage) {
-    jsonLd.image = urlFor(post.mainImage).width(1200).height(630).url();
+  if (ogImageUrl) {
+    jsonLd.image = ogImageUrl;
   }
+
+  // Breadcrumb JSON-LD
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       <article className="pb-16">
@@ -157,6 +210,15 @@ export default async function BlogPostPage({
               </time>
             )}
 
+            <div className="mt-4">
+              <ShareButtons
+                url={postUrl}
+                title={post.title}
+                imageUrl={ogImageUrl}
+                description={post.excerpt}
+              />
+            </div>
+
             {/* Recipe details */}
             {post.postType === "recipe" && (
               <div className="mt-8">
@@ -188,6 +250,16 @@ export default async function BlogPostPage({
                 <PortableTextRenderer value={post.instructions} />
               </div>
             )}
+
+            {/* Share buttons (bottom) */}
+            <div className="mt-10 pt-6 border-t border-evergreen/10">
+              <ShareButtons
+                url={postUrl}
+                title={post.title}
+                imageUrl={ogImageUrl}
+                description={post.excerpt}
+              />
+            </div>
 
             {/* ShopMy links */}
             {post.shopMyLinks && post.shopMyLinks.length > 0 && (

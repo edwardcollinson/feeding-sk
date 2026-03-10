@@ -128,6 +128,7 @@ export default function Navbar() {
           className="md:hidden relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-200 hover:bg-evergreen/5"
           aria-label="Toggle menu"
           aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
           <div className="flex h-5 w-6 flex-col items-center justify-center">
             <span
@@ -196,7 +197,10 @@ export default function Navbar() {
 
       {/* Mobile menu panel */}
       <div
+        id="mobile-menu"
         ref={menuRef}
+        role="dialog"
+        aria-label="Navigation menu"
         className={`fixed top-0 right-0 z-40 h-full w-[80%] max-w-sm bg-offwhite shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}

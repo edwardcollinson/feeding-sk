@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function POST(request: Request) {
   try {
     const { name, email, company, inquiryType, message } =
@@ -26,22 +35,28 @@ export async function POST(request: Request) {
       });
     }
 
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeCompany = company ? escapeHtml(company) : "";
+    const safeInquiryType = escapeHtml(inquiryType);
+    const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
+
     const resend = new Resend(RESEND_API_KEY);
 
     await resend.emails.send({
       from: "Feeding SK Website <noreply@feedingsk.com>",
       to: ["hello@feedingsk.com"],
       replyTo: email,
-      subject: `[${inquiryType}] New inquiry from ${name}`,
+      subject: `[${safeInquiryType}] New inquiry from ${safeName}`,
       html: `
         <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ""}
-        <p><strong>Inquiry Type:</strong> ${inquiryType}</p>
+        <p><strong>Name:</strong> ${safeName}</p>
+        <p><strong>Email:</strong> ${safeEmail}</p>
+        ${safeCompany ? `<p><strong>Company:</strong> ${safeCompany}</p>` : ""}
+        <p><strong>Inquiry Type:</strong> ${safeInquiryType}</p>
         <hr />
         <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br />")}</p>
+        <p>${safeMessage}</p>
       `,
     });
 
