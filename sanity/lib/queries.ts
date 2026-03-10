@@ -135,13 +135,16 @@ export async function getRelatedPosts(
 }
 
 export async function getPostSlugs() {
-  return safeFetch(
+  const slugs = await safeFetch(
     `*[_type == "post" && defined(slug.current)]{
-      "slug": select(slug.current match "/*" => string::split(slug.current, "/")[1], slug.current)
+      "slug": slug.current
     }`,
     {},
     []
   );
+  return (slugs || []).map((s: { slug: string }) => ({
+    slug: s.slug.replace(/^\/+/, ""),
+  }));
 }
 
 export async function getLatestPostsByType(
@@ -212,13 +215,17 @@ export async function getActiveLinks() {
 
 // ── Sitemap ──
 export async function getAllPostsForSitemap() {
-  return safeFetch(
+  const posts = await safeFetch(
     `*[_type == "post" && defined(slug.current)]{
-      "slug": select(slug.current match "/*" => string::split(slug.current, "/")[1], slug.current),
+      "slug": slug.current,
       publishedAt,
       _updatedAt
     }`,
     {},
     []
   );
+  return (posts || []).map((p: { slug: string; publishedAt: string; _updatedAt: string }) => ({
+    ...p,
+    slug: p.slug.replace(/^\/+/, ""),
+  }));
 }
