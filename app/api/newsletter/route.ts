@@ -15,11 +15,10 @@ export async function POST(request: Request) {
     const KIT_FORM_ID = process.env.KIT_FORM_ID;
 
     if (!KIT_API_KEY || !KIT_FORM_ID) {
-      console.error("Kit API key or form ID is not configured");
-      return NextResponse.json(
-        { error: "Newsletter service not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({
+        unavailable: true,
+        message: "Newsletter coming soon! Follow us on Instagram in the meantime.",
+      });
     }
 
     const res = await fetch(

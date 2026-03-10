@@ -11,7 +11,8 @@ const inquiryTypes = [
 ];
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error" | "mailto">("idle");
+  const [mailtoLink, setMailtoLink] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,8 +29,14 @@ export default function ContactForm() {
       });
 
       if (res.ok) {
-        setStatus("success");
-        (e.target as HTMLFormElement).reset();
+        const data = await res.json();
+        if (data.fallback) {
+          setMailtoLink(data.mailto);
+          setStatus("mailto");
+        } else {
+          setStatus("success");
+          (e.target as HTMLFormElement).reset();
+        }
       } else {
         setStatus("error");
       }
@@ -47,6 +54,25 @@ export default function ContactForm() {
         <p className="text-evergreen/70">
           Thanks for reaching out. I&apos;ll get back to you soon.
         </p>
+      </div>
+    );
+  }
+
+  if (status === "mailto") {
+    return (
+      <div className="bg-emerald/10 rounded-2xl p-8 text-center">
+        <h3 className="font-heading text-2xl text-evergreen mb-2">
+          Almost There!
+        </h3>
+        <p className="text-evergreen/70 mb-4">
+          Click below to send your message via email.
+        </p>
+        <a
+          href={mailtoLink}
+          className="inline-flex items-center gap-2 rounded-full bg-emerald text-white px-6 py-3 text-sm font-medium hover:bg-emerald/90 transition-colors"
+        >
+          Email Us Directly
+        </a>
       </div>
     );
   }

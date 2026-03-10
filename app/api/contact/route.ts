@@ -16,11 +16,14 @@ export async function POST(request: Request) {
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
     if (!RESEND_API_KEY) {
-      console.error("Resend API key is not configured");
-      return NextResponse.json(
-        { error: "Email service not configured" },
-        { status: 500 }
+      const subject = encodeURIComponent(`[${inquiryType}] Inquiry from ${name}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}${company ? `\nCompany: ${company}` : ""}\nInquiry Type: ${inquiryType}\n\n${message}`
       );
+      return NextResponse.json({
+        fallback: true,
+        mailto: `mailto:hello@feedingsk.com?subject=${subject}&body=${body}`,
+      });
     }
 
     const resend = new Resend(RESEND_API_KEY);

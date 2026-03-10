@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 export default function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
+    "idle" | "loading" | "success" | "error" | "unavailable"
   >("idle");
   const [isFocused, setIsFocused] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -30,8 +30,13 @@ export default function NewsletterSignup() {
       });
 
       if (res.ok) {
-        setStatus("success");
-        setEmail("");
+        const data = await res.json();
+        if (data.unavailable) {
+          setStatus("unavailable");
+        } else {
+          setStatus("success");
+          setEmail("");
+        }
       } else {
         setStatus("error");
       }
@@ -103,7 +108,26 @@ export default function NewsletterSignup() {
           straight to your inbox — no spam, just the good stuff.
         </p>
 
-        {status === "success" ? (
+        {status === "unavailable" ? (
+          <div className="relative mx-auto max-w-md">
+            <div className="rounded-2xl border border-offwhite/20 bg-offwhite/10 px-8 py-8 backdrop-blur-sm">
+              <p className="text-xl font-semibold text-offwhite">
+                Newsletter Coming Soon!
+              </p>
+              <p className="mt-2 text-sm text-offwhite/60">
+                Follow us on Instagram for the latest updates.
+              </p>
+              <a
+                href="https://instagram.com/feedingsk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-bubblegum px-6 py-3 text-sm font-semibold text-white hover:bg-bubblegum/90 transition-colors"
+              >
+                Follow @feedingsk
+              </a>
+            </div>
+          </div>
+        ) : status === "success" ? (
           <div className="relative mx-auto max-w-md">
             {/* Celebratory confetti dots */}
             {showConfetti && (
