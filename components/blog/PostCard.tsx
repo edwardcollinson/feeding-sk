@@ -40,9 +40,11 @@ export default function PostCard({ post }: PostCardProps) {
     text: "text-emerald",
   };
 
+  const cleanSlug = post.slug.current.replace(/^\/+/, "");
+
   return (
     <Link
-      href={`/blog/${post.slug.current}`}
+      href={`/blog/${cleanSlug}`}
       className="group relative flex flex-col bg-offwhite rounded-3xl overflow-hidden
         shadow-[0_2px_12px_rgba(4,42,43,0.06)]
         hover:shadow-[0_12px_40px_rgba(4,42,43,0.12)]

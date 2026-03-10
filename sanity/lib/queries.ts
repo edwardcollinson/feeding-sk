@@ -85,7 +85,7 @@ export async function getAllPosts(
 
 export async function getPostBySlug(slug: string) {
   return safeFetch(
-    `*[_type == "post" && slug.current == $slug][0]{
+    `*[_type == "post" && (slug.current == $slug || slug.current == "/" + $slug)][0]{
       _id,
       title,
       slug,
@@ -137,7 +137,7 @@ export async function getRelatedPosts(
 export async function getPostSlugs() {
   return safeFetch(
     `*[_type == "post" && defined(slug.current)]{
-      "slug": slug.current
+      "slug": select(slug.current match "/*" => string::split(slug.current, "/")[1], slug.current)
     }`,
     {},
     []
@@ -214,7 +214,7 @@ export async function getActiveLinks() {
 export async function getAllPostsForSitemap() {
   return safeFetch(
     `*[_type == "post" && defined(slug.current)]{
-      "slug": slug.current,
+      "slug": select(slug.current match "/*" => string::split(slug.current, "/")[1], slug.current),
       publishedAt,
       _updatedAt
     }`,

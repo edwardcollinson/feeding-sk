@@ -274,7 +274,7 @@ export default function Hero({ post }: HeroProps) {
 
             {/* CTA button */}
             <Link
-              href={`/blog/${post.slug.current}`}
+              href={`/blog/${post.slug.current.replace(/^\/+/, "")}`}
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-emerald px-7 py-3.5 font-semibold text-white transition-all duration-300 hover:shadow-[0_0_30px_rgba(60,185,97,0.4)] hover:scale-[1.03] active:scale-[0.98]"
             >
               {/* Shine sweep on hover */}
