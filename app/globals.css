@@ -14,35 +14,359 @@
   --font-body: var(--font-dm-sans);
 }
 
+/* -------------------------------------------------------
+   1. BASE STYLES
+   ------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-body), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), serif;
+  text-wrap: balance;
 }
 
-/* Prose overrides for blog content */
+/* -------------------------------------------------------
+   2. SELECTION COLORS
+   ------------------------------------------------------- */
+
+::selection {
+  background-color: rgba(60, 185, 97, 0.25);
+  color: var(--color-evergreen);
+}
+
+::-moz-selection {
+  background-color: rgba(60, 185, 97, 0.25);
+  color: var(--color-evergreen);
+}
+
+/* -------------------------------------------------------
+   3. CUSTOM SCROLLBAR
+   ------------------------------------------------------- */
+
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-steel-blue);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-emerald);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-steel-blue) transparent;
+}
+
+/* -------------------------------------------------------
+   4. PROSE / TYPOGRAPHY (blog content)
+   ------------------------------------------------------- */
+
 .prose {
   --tw-prose-body: var(--color-evergreen);
   --tw-prose-headings: var(--color-evergreen);
   --tw-prose-links: var(--color-emerald);
   --tw-prose-bold: var(--color-evergreen);
+  --tw-prose-quotes: var(--color-steel-blue);
+  --tw-prose-quote-borders: var(--color-emerald);
+  --tw-prose-counters: var(--color-steel-blue);
+  --tw-prose-bullets: var(--color-emerald);
+  --tw-prose-hr: rgba(4, 42, 43, 0.12);
+  --tw-prose-captions: var(--color-steel-blue);
+  --tw-prose-code: var(--color-bubblegum);
+  --tw-prose-pre-bg: var(--color-evergreen);
+  --tw-prose-pre-code: var(--color-offwhite);
+  --tw-prose-th-borders: rgba(4, 42, 43, 0.12);
+  --tw-prose-td-borders: rgba(4, 42, 43, 0.08);
   max-width: 72ch;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  letter-spacing: -0.015em;
+}
+
+.prose h1 {
+  font-size: 2.25em;
+  line-height: 1.15;
+  margin-bottom: 0.6em;
+}
+
+.prose h2 {
+  font-size: 1.65em;
+  line-height: 1.25;
+  margin-top: 1.8em;
+}
+
+.prose h3 {
+  font-size: 1.3em;
+  line-height: 1.35;
+}
+
+.prose p {
+  line-height: 1.8;
+  margin-bottom: 1.25em;
+}
+
+.prose li {
+  line-height: 1.75;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+.prose a {
+  text-decoration-color: rgba(60, 185, 97, 0.4);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 .prose a:hover {
   color: var(--color-bubblegum);
+  text-decoration-color: rgba(241, 106, 135, 0.4);
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+.prose blockquote {
+  font-style: italic;
+  border-left-width: 3px;
+  padding-left: 1.25em;
+  border-radius: 0 4px 4px 0;
+  background: rgba(60, 185, 97, 0.04);
 }
 
-/* Selection color */
-::selection {
-  background-color: #3CB96133;
+.prose code:not(pre code) {
+  font-size: 0.875em;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  background: rgba(241, 106, 135, 0.08);
+  font-weight: 500;
 }
+
+.prose pre {
+  border-radius: 12px;
+  padding: 1.25em 1.5em;
+}
+
+.prose img {
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(4, 42, 43, 0.08);
+}
+
+.prose hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(4, 42, 43, 0.12),
+    transparent
+  );
+}
+
+.prose figcaption {
+  text-align: center;
+  font-size: 0.875em;
+}
+
+/* -------------------------------------------------------
+   5. KEYFRAME ANIMATIONS
+   ------------------------------------------------------- */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(60, 185, 97, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(60, 185, 97, 0);
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1) rotate(90deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.5) rotate(360deg);
+  }
+}
+
+/* -------------------------------------------------------
+   6. UTILITY CLASSES
+   ------------------------------------------------------- */
+
+/* Animate: fade in */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}
+
+/* Animate: fade in + slide up */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+/* Animate: slide in from left */
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out both;
+}
+
+/* Animate: slide in from right */
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out both;
+}
+
+/* Animate: gentle float / bob */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Animate: gradient background shift */
+.animate-gradient {
+  animation: gradientShift 6s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Animate: CTA pulse ring */
+.animate-pulse-cta {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Gradient text (emerald -> bubblegum) */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-emerald), var(--color-bubblegum));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Brand gradient background */
+.bg-gradient {
+  background: linear-gradient(135deg, var(--color-emerald), var(--color-sky-blue), var(--color-bubblegum));
+}
+
+/* Animated brand gradient background */
+.bg-gradient-animated {
+  background: linear-gradient(135deg, var(--color-emerald), var(--color-sky-blue), var(--color-bubblegum), var(--color-emerald));
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* Glassmorphism panel */
+.glass {
+  background: rgba(255, 253, 249, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 253, 249, 0.35);
+  box-shadow: 0 4px 24px rgba(4, 42, 43, 0.06);
+}
+
+/* Dark variant of glass for use on light backgrounds */
+.glass-dark {
+  background: rgba(4, 42, 43, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 253, 249, 0.1);
+  box-shadow: 0 4px 24px rgba(4, 42, 43, 0.15);
+  color: var(--color-offwhite);
+}
+
+/* Staggered animation delay helpers (for lists / grids) */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
